@@ -1,0 +1,33 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: docker.pkg.github.com/ryankennedy/voltdb-circleci-docker/voltdb-circleci-docker:0.0.1
+    steps:
+      - checkout
+      - run: ant
+      - persist_to_workspace:
+          root: .
+          paths:
+            - voltdb
+            - obj
+  junit_regression_h1:
+    docker:
+      - image: docker.pkg.github.com/ryankennedy/voltdb-circleci-docker/voltdb-circleci-docker:0.0.1
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run: ant junit_regression_h1
+      - store_test_results:
+          path: obj/release/testoutput
+
+workflows:
+  version: 2
+  build_test_package:
+    jobs:
+      - build
+      - junit_regression_h1:
+          requires:
+            - build
