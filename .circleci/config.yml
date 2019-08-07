@@ -4,6 +4,9 @@ jobs:
   build:
     docker:
       - image: docker.pkg.github.com/ryankennedy/voltdb-circleci-docker/voltdb-circleci-docker:0.0.1
+        auth:
+          username: ryankennedy
+          password: $GITHUB_DOCKER_PASSWORD
     steps:
       - checkout
       - run: ant
@@ -15,6 +18,9 @@ jobs:
   junit_regression_h1:
     docker:
       - image: docker.pkg.github.com/ryankennedy/voltdb-circleci-docker/voltdb-circleci-docker:0.0.1
+        auth:
+          username: ryankennedy
+          password: $GITHUB_DOCKER_PASSWORD
     steps:
       - checkout
       - attach_workspace:
